@@ -1,0 +1,153 @@
+import React, { useState } from 'react';
+
+const gopQuotes = [
+  {
+    quote: "They’re not people. These are animals.",
+    fact: "Donald Trump, May 16, 2018 – Dehumanization rhetoric."
+  },
+  {
+    quote: "You have people coming in and they're poisoning our country.",
+    fact: "Donald Trump, Sept–Dec 2023 – Blood purity and xenophobia themes."
+  },
+  {
+    quote: "We will root out the communists, Marxists, fascists.",
+    fact: "Donald Trump, March 4, 2023 – Authoritarian purge language."
+  },
+  {
+    quote: "We can’t restore our civilization with somebody else's babies.",
+    fact: "Rep. Steve King, March 12, 2017 – Ethnonationalist statement."
+  },
+  {
+    quote: "Posted anime video of himself killing Rep. AOC.",
+    fact: "Rep. Paul Gosar, Nov 2021 – Political eliminationism."
+  },
+  {
+    quote: "We’re going to start slitting throats on day one.",
+    fact: "Gov. Ron DeSantis, Aug 2023 – Violent political purging."
+  },
+  {
+    quote: "______ are the party of pedophiles… they want to groom your kids.",
+    fact: "Rep. Marjorie Taylor Greene, 2021–2023 – Rallies and Twitter – Moral panic / scapegoating."
+  },
+  {
+    quote: "Promoted 'zero tolerance' immigration and English-first nationalism",
+    fact: "Stephen Miller, 2017–2020 – White House policies – Ethnonationalism, state control."
+  },
+  {
+    quote: "The media is the enemy of the people.",
+    fact: "Donald Trump Jr., 2016–2020 – speeches and Twitter – Propaganda / delegitimizing dissent."
+  },
+  {
+    quote: "We need to stop the invasion at our _______ border. It's an existential threat.",
+    fact: "Sen. J.D. Vance, Nov 2021 – Militarized nationalism."
+  }
+];
+
+const naziQuotes = [
+  {
+    quote: "One single cohabitation of a _____ with an _____ can destroy an entire _____ family.",
+    fact: "Julius Streicher, 1935 – Blood purity and racial pollution."
+  },
+  {
+    quote: "It is not the mission of art to wallow in filth for filth's sake.",
+    fact: "Adolf Hitler, (1935) – Cultural purity and traditionalism."
+  },
+  {
+    quote: "It is the absolute right of the State to supervise the formation of public opinion.",
+    fact: "Joseph Goebbels, c.1933 – State propaganda and media control."
+  },
+  {
+    quote: "The Jews started this war, and they direct it.",
+    fact: "Joseph Goebbels, (1943) – Scapegoating and conspiracism."
+  },
+  {
+    quote: "Ein Volk, ein Reich, ein Führer!",
+    fact: "Nazi slogan, post-1938 – Authoritarian nationalism."
+  },
+  {
+    quote: "The state must declare the child to to be the most precious treasure of the people.",
+    fact: "Adolf Hitler, Mein Kampf (1925) – Natalism, nationalism."
+  },
+  {
+    quote: "Propaganda must always address itself to the broad masses of the people.",
+    fact: "Adolf Hitler, Mein Kampf (1925) – Mass propaganda."
+  },
+  {
+    quote: "The _____ is always right.",
+    fact: "Nazi Party Slogan, widely used from (1934) – Authoritarianism."
+  },
+  {
+    quote: "We are not a class party, but a ______ people’s party.",
+    fact: "Joseph Goebbels, (1934) – Populist nationalism."
+  },
+  {
+    quote: "The great masses of the people will more easily fall victim to a big lie than to a small one.",
+    fact: "Adolf Hitler, Mein Kampf (1925) – Mass manipulation."
+  },
+  {
+    quote: "The press must not be free. It must be in the hands of the state.",
+    fact: "Joseph Goebbels, Press conference, (1933) – Propaganda, anti-press."
+  },
+  {
+    quote: "The ____ started this war, and they direct it. Their goal is to destroy and exterminate our people..",
+    fact: "Joseph Goebbels, Das Reich editorial, (1943) – Mass manipulation."
+  }
+];
+
+const getRandomQuote = () => {
+  const isGOP = Math.random() > 0.5;
+  const quoteList = isGOP ? gopQuotes : naziQuotes;
+  const selected = quoteList[Math.floor(Math.random() * quoteList.length)];
+  return { ...selected, isGOP };
+};
+
+export default function QuoteGame() {
+  const [currentQuote, setCurrentQuote] = useState(getRandomQuote());
+  const [result, setResult] = useState(null);
+
+  const handleGuess = (guessGOP) => {
+    setResult(guessGOP === currentQuote.isGOP ? "Winner!!!" : "Incorrect! ❌");
+  };
+
+  const playAgain = () => {
+    setCurrentQuote(getRandomQuote());
+    setResult(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-blue-700 to-red-700 flex flex-col items-center justify-center text-center p-4">
+      <div className="bg-white rounded-xl shadow-lg p-8 max-w-2xl">
+        <h1 className="text-3xl font-bold text-blue-900 mb-4">Guess the Source of the following quote</h1>
+        <p className="italic text-xl mb-6">"{currentQuote.quote}"</p>
+
+        {result ? (
+          <>
+            <p className="text-2xl font-bold mb-2">{result}</p>
+            <p className="text-md text-gray-700 mb-4">{currentQuote.fact}</p>
+            <button
+              onClick={playAgain}
+              className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-800 transition"
+            >
+              Play Again
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => handleGuess(true)}
+              className="px-6 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-800 transition mr-2"
+            >
+              GOP
+            </button>
+            <button
+              onClick={() => handleGuess(false)}
+              className="px-6 py-2 bg-gray-600 text-white font-bold rounded-lg hover:bg-gray-800 transition ml-2"
+            >
+              Third Reich
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
